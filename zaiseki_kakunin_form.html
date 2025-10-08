@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>在籍確認フォーム</title>
+  <style>
+    iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>在籍確認フォーム</h2>
+
+  <!-- Googleフォームの埋め込み -->
+  <iframe id="formFrame" src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true"></iframe>
+
+  <script>
+    fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
+      .then(response => response.json())
+      .then(data => {
+        const country = data.country;
+
+        const interval = setInterval(() => {
+          const iframe = document.getElementById('formFrame');
+          const formDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+          const countryField = formDoc.querySelector('input[name="entry.1234567890"]');
+
+          if (countryField) {
+            countryField.value = country;
+            clearInterval(interval);
+          }
+        }, 1000);
+      });
+  </script>
+
+</body>
+</html>
